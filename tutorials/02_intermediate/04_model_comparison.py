@@ -35,19 +35,19 @@ def main():
     print("=" * 70)
 
     # Step 1: Load data
-    print("\n📊 Step 1: Loading fraud prediction data...")
+    print("\n Step 1: Loading fraud prediction data...")
     data_path = project_root / "data" / "fraud_predictions.csv"
 
     if not data_path.exists():
-        print(f"❌ Data file not found: {data_path}")
+        print(f"[ERROR] Data file not found: {data_path}")
         print("Please run: python setup_database.py")
         return
 
     df = pl.read_csv(data_path)
-    print(f"✓ Loaded {len(df)} predictions with 3 models")
+    print(f"[OK] Loaded {len(df)} predictions with 3 models")
 
     # Step 2: Individual model performance
-    print("\n📈 Step 2: Evaluating individual model performance...")
+    print("\n Step 2: Evaluating individual model performance...")
 
     models = {
         "Model 1": "model1_fraud_score",
@@ -79,7 +79,7 @@ def main():
         )
 
     # Step 3: Double lift analysis - Model 1 vs Model 2
-    print("\n🔍 Step 3: Comparing Model 1 vs Model 2 (Double Lift)...")
+    print("\n Step 3: Comparing Model 1 vs Model 2 (Double Lift)...")
 
     double_lift_result = model_validation.calculate_double_lift(
         df,
@@ -95,7 +95,7 @@ def main():
     print(f"- Conditional Lift: {double_lift_result.conditional_lift:.4f}")
 
     # Step 4: Interpret correlation
-    print("\n💡 Step 4: Interpreting score correlation...")
+    print("\n[INFO] Step 4: Interpreting score correlation...")
 
     corr = double_lift_result.correlation
     print(f"\nCorrelation: {corr:.4f}")
@@ -114,30 +114,30 @@ def main():
     print(f"Interpretation: {interpretation}")
 
     if abs(corr) < 0.7:
-        print("\n✓ Low correlation suggests models could be combined for better performance")
+        print("\n[OK] Low correlation suggests models could be combined for better performance")
     else:
-        print("\n⚠ High correlation suggests models are redundant")
+        print("\n[WARNING] High correlation suggests models are redundant")
 
     # Step 5: Understand joint and conditional lift
-    print("\n📊 Step 5: Understanding joint and conditional lift...")
+    print("\n Step 5: Understanding joint and conditional lift...")
 
     print(f"\nJoint Lift: {double_lift_result.joint_lift:.4f}")
-    print("  → Lift when BOTH models score high")
-    print("  → Measures agreement between models")
+    print("  -> Lift when BOTH models score high")
+    print("  -> Measures agreement between models")
 
     print(f"\nConditional Lift: {double_lift_result.conditional_lift:.4f}")
-    print("  → Lift of Model 2 when Model 1 scores high")
-    print("  → Measures incremental value of Model 2")
+    print("  -> Lift of Model 2 when Model 1 scores high")
+    print("  -> Measures incremental value of Model 2")
 
     if double_lift_result.conditional_lift > 1.2:
-        print("  ✓ Model 2 adds significant value beyond Model 1")
+        print("  [OK] Model 2 adds significant value beyond Model 1")
     elif double_lift_result.conditional_lift > 1.0:
         print("  ~ Model 2 adds some value beyond Model 1")
     else:
-        print("  ✗ Model 2 adds little value beyond Model 1")
+        print("  [X] Model 2 adds little value beyond Model 1")
 
     # Step 6: Visualize double lift
-    print("\n📈 Step 6: Visualizing double lift comparison...")
+    print("\n Step 6: Visualizing double lift comparison...")
     try:
         validation_plots.plot_double_lift(
             df,
@@ -148,13 +148,13 @@ def main():
             score2_name="Model 2",
             title="Model Comparison: Model 1 vs Model 2",
         )
-        print("✓ Double lift plot displayed")
+        print("[OK] Double lift plot displayed")
         print("(Close the plot window to continue)")
     except Exception as e:
-        print(f"⚠ Could not create plot: {e}")
+        print(f"[WARNING] Could not create plot: {e}")
 
     # Step 7: Compare all model pairs
-    print("\n🔄 Step 7: Comparing all model pairs...")
+    print("\n Step 7: Comparing all model pairs...")
 
     model_pairs = [
         ("Model 1", "model1_fraud_score", "Model 2", "model2_fraud_score"),
@@ -177,7 +177,7 @@ def main():
         )
 
     # Step 8: Model selection recommendation
-    print("\n🎯 Step 8: Model Selection Recommendation...")
+    print("\n Step 8: Model Selection Recommendation...")
 
     # Find best model by AUC
     best_model = max(individual_results.items(), key=lambda x: x[1]["roc"].auc_score)
@@ -193,12 +193,12 @@ def main():
     ).correlation
 
     if abs(m1_m2_corr) < 0.7:
-        print("✓ Models 1 and 2 are complementary - consider ensemble")
+        print("[OK] Models 1 and 2 are complementary - consider ensemble")
     else:
-        print("✗ Models are too similar - use best individual model")
+        print("[X] Models are too similar - use best individual model")
 
     # Step 9: Create ensemble score
-    print("\n🔧 Step 9: Creating a simple ensemble...")
+    print("\n Step 9: Creating a simple ensemble...")
 
     # Simple average ensemble
     df_ensemble = df.with_columns(
@@ -227,12 +227,12 @@ def main():
     print(f"\nImprovement over best individual: {improvement:+.4f}")
 
     if improvement > 0.01:
-        print("✓ Ensemble shows meaningful improvement")
+        print("[OK] Ensemble shows meaningful improvement")
     else:
         print("~ Ensemble shows marginal improvement")
 
     # Step 10: Save results
-    print("\n💾 Step 10: Saving comparison results...")
+    print("\n Step 10: Saving comparison results...")
 
     output_dir = project_root / "outputs"
     output_dir.mkdir(exist_ok=True)
@@ -240,10 +240,10 @@ def main():
     # Save double lift results
     double_lift_df = double_lift_result.to_polars()
     double_lift_df.write_csv(output_dir / "04_double_lift_results.csv")
-    print(f"✓ Results saved to: {output_dir / '04_double_lift_results.csv'}")
+    print(f"[OK] Results saved to: {output_dir / '04_double_lift_results.csv'}")
 
     # Step 11: Exercise
-    print("\n🎓 EXERCISE: Weighted Ensemble")
+    print("\n[EXERCISE] EXERCISE: Weighted Ensemble")
     print("\nTry creating a weighted ensemble based on individual model performance:")
     print(
         """
@@ -267,7 +267,7 @@ def main():
     )
 
     print("\n" + "=" * 70)
-    print("✅ Tutorial Complete!")
+    print("[SUCCESS] Tutorial Complete!")
     print("=" * 70)
     print("\nKey Takeaways:")
     print("1. Double lift analysis reveals model complementarity")

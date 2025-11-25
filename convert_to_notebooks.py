@@ -115,7 +115,7 @@ def python_to_notebook(py_file: Path) -> dict:
                     continue
                 if 'print("Tutorial' in line:
                     continue
-                if 'print("✅' in line:
+                if 'print("[SUCCESS]' in line:
                     continue
                 if line.strip() == "return":
                     continue
@@ -251,15 +251,15 @@ def convert_all_tutorials():
             with open(nb_file, "w", encoding="utf-8") as f:
                 json.dump(notebook, f, indent=1)
 
-            print(f"  ✓ Created: {nb_file.relative_to(project_root)}")
+            print(f"  [OK] Created: {nb_file.relative_to(project_root)}")
             converted_count += 1
 
         except Exception as e:
-            print(f"  ✗ Error: {e}")
+            print(f"  [X] Error: {e}")
 
     print(f"\n{'=' * 70}")
-    print(f"✅ Converted {converted_count} tutorials to Jupyter notebooks")
-    print(f"📁 Notebooks saved to: {notebooks_dir}")
+    print(f"[SUCCESS] Converted {converted_count} tutorials to Jupyter notebooks")
+    print(f"Notebooks saved to: {notebooks_dir}")
     print(f"{'=' * 70}")
     print("\nTo use the notebooks:")
     print("1. Install Jupyter: pip install jupyter")

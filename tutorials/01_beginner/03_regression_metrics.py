@@ -34,21 +34,21 @@ def main():
     print("=" * 70)
 
     # Step 1: Load data
-    print("\n📊 Step 1: Loading premium prediction data...")
+    print("\n Step 1: Loading premium prediction data...")
     data_path = project_root / "data" / "premium_predictions.csv"
 
     if not data_path.exists():
-        print(f"❌ Data file not found: {data_path}")
+        print(f"[ERROR] Data file not found: {data_path}")
         print("Please run: python utils/data_generators.py")
         return
 
     df = pl.read_csv(data_path)
-    print(f"✓ Loaded {len(df)} predictions")
+    print(f"[OK] Loaded {len(df)} predictions")
     print("\nData preview:")
     print(df.head())
 
     # Step 2: Calculate basic statistics
-    print("\n📈 Step 2: Understanding the data...")
+    print("\n Step 2: Understanding the data...")
     print("Actual premium statistics:")
     print(f"- Mean: ${df['actual_premium'].mean():.2f}")
     print(f"- Median: ${df['actual_premium'].median():.2f}")
@@ -57,7 +57,7 @@ def main():
     print(f"- Max: ${df['actual_premium'].max():.2f}")
 
     # Step 3: Calculate regression metrics for Model 1
-    print("\n🎯 Step 3: Calculating regression metrics for Model 1...")
+    print("\n Step 3: Calculating regression metrics for Model 1...")
     metrics = model_validation.calculate_regression_metrics(
         df,
         actual_column="actual_premium",
@@ -73,18 +73,18 @@ def main():
     print(f"- Number of samples: {metrics.n_samples}")
 
     # Step 4: Interpret the metrics
-    print("\n💡 Step 4: Interpreting the metrics...")
+    print("\n[INFO] Step 4: Interpreting the metrics...")
 
     print(f"\nRMSE: ${metrics.rmse:.2f}")
-    print(f"  → On average, predictions are off by about ${metrics.rmse:.2f}")
-    print(f"  → As % of mean premium: {(metrics.rmse / df['actual_premium'].mean()) * 100:.1f}%")
+    print(f"  -> On average, predictions are off by about ${metrics.rmse:.2f}")
+    print(f"  -> As % of mean premium: {(metrics.rmse / df['actual_premium'].mean()) * 100:.1f}%")
 
     print(f"\nMAE: ${metrics.mae:.2f}")
-    print(f"  → Median absolute error is ${metrics.mae:.2f}")
-    print("  → More robust to outliers than RMSE")
+    print(f"  -> Median absolute error is ${metrics.mae:.2f}")
+    print("  -> More robust to outliers than RMSE")
 
     print(f"\nR-squared: {metrics.r2:.4f}")
-    print(f"  → Model explains {metrics.r2 * 100:.1f}% of variance in premiums")
+    print(f"  -> Model explains {metrics.r2 * 100:.1f}% of variance in premiums")
 
     if metrics.r2 >= 0.9:
         interpretation = "Excellent fit"
@@ -94,10 +94,10 @@ def main():
         interpretation = "Moderate fit"
     else:
         interpretation = "Poor fit"
-    print(f"  → {interpretation}")
+    print(f"  -> {interpretation}")
 
     # Step 5: Compare all three models
-    print("\n🔍 Step 5: Comparing all three models...")
+    print("\n Step 5: Comparing all three models...")
 
     models = {
         "Model 1": "model1_predicted_premium",
@@ -106,7 +106,7 @@ def main():
     }
 
     print("\nModel Performance Comparison:")
-    print(f"{'Model':<12} {'RMSE':<12} {'MAE':<12} {'R²':<10}")
+    print(f"{'Model':<12} {'RMSE':<12} {'MAE':<12} {'R^2':<10}")
     print("-" * 50)
 
     all_metrics = []
@@ -122,16 +122,16 @@ def main():
         all_metrics.append(metrics_df)
 
     # Step 6: Save combined metrics
-    print("\n📋 Step 6: Saving combined metrics...")
+    print("\n Step 6: Saving combined metrics...")
     combined_metrics = pl.concat(all_metrics)
 
     output_dir = project_root / "outputs"
     output_dir.mkdir(exist_ok=True)
     combined_metrics.write_csv(output_dir / "03_regression_metrics.csv")
-    print(f"✓ Metrics saved to: {output_dir / '03_regression_metrics.csv'}")
+    print(f"[OK] Metrics saved to: {output_dir / '03_regression_metrics.csv'}")
 
     # Step 7: Create diagnostic plots
-    print("\n📊 Step 7: Creating diagnostic plots for Model 1...")
+    print("\n Step 7: Creating diagnostic plots for Model 1...")
     try:
         validation_plots.plot_regression_diagnostics(
             df,
@@ -139,17 +139,17 @@ def main():
             predicted_column="model1_predicted_premium",
             title="Premium Prediction Model 1 - Diagnostics",
         )
-        print("✓ Diagnostic plots displayed")
+        print("[OK] Diagnostic plots displayed")
         print("\nThe diagnostic plots show:")
         print("  1. Actual vs Predicted: Should follow diagonal line")
         print("  2. Residual Plot: Should be randomly scattered around 0")
         print("  3. Q-Q Plot: Should follow diagonal if residuals are normal")
         print("(Close the plot window to continue)")
     except Exception as e:
-        print(f"⚠ Could not create plot: {e}")
+        print(f"[WARNING] Could not create plot: {e}")
 
     # Step 8: Analyze errors by customer age groups
-    print("\n🎯 Step 8: Analyzing errors by customer segments...")
+    print("\n Step 8: Analyzing errors by customer segments...")
 
     # Add age groups
     df_with_groups = df.with_columns(
@@ -187,7 +187,7 @@ def main():
         print(f"{age_group:<12} {count:<8} ${mean_error:<14.2f} ${mean_abs_error:<14.2f}")
 
     # Step 9: Exercise
-    print("\n🎓 EXERCISE: Analyze by Coverage Amount")
+    print("\n[EXERCISE] EXERCISE: Analyze by Coverage Amount")
     print("\nTry analyzing model performance by coverage amount:")
     print(
         """
@@ -206,12 +206,12 @@ def main():
             actual_column='actual_premium',
             predicted_column='model1_predicted_premium'
         )
-        print(f"{group}: RMSE=${metrics.rmse:.2f}, R²={metrics.r2:.4f}")
+        print(f"{group}: RMSE=${metrics.rmse:.2f}, R^2={metrics.r2:.4f}")
     """
     )
 
     print("\n" + "=" * 70)
-    print("✅ Tutorial Complete!")
+    print("[SUCCESS] Tutorial Complete!")
     print("=" * 70)
     print("\nKey Takeaways:")
     print("1. RMSE and MAE measure prediction error in original units")

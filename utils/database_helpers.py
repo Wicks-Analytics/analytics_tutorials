@@ -218,25 +218,25 @@ def create_sqlite_tables(db_path: str = None):
     with engine.connect() as conn:
         # Policies table
         policies.write_database(table_name="policies", connection=conn, if_table_exists="replace")
-        print("✓ Created 'policies' table")
+        print("[OK] Created 'policies' table")
 
         # Claims table
         claims.write_database(table_name="claims", connection=conn, if_table_exists="replace")
-        print("✓ Created 'claims' table")
+        print("[OK] Created 'claims' table")
 
         # Fraud predictions table
         fraud_preds.write_database(
             table_name="fraud_predictions", connection=conn, if_table_exists="replace"
         )
-        print("✓ Created 'fraud_predictions' table")
+        print("[OK] Created 'fraud_predictions' table")
 
         # Premium predictions table
         premium_preds.write_database(
             table_name="premium_predictions", connection=conn, if_table_exists="replace"
         )
-        print("✓ Created 'premium_predictions' table")
+        print("[OK] Created 'premium_predictions' table")
 
-    print(f"\n✅ Database created successfully at: {db_path or 'data/insurance.db'}")
+    print(f"\n[SUCCESS] Database created successfully at: {db_path or 'data/insurance.db'}")
 
 
 if __name__ == "__main__":

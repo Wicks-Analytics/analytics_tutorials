@@ -34,19 +34,19 @@ def main():
     print("=" * 70)
 
     # Step 1: Load data
-    print("\n📊 Step 1: Loading premium prediction data...")
+    print("\n Step 1: Loading premium prediction data...")
     data_path = project_root / "data" / "premium_predictions.csv"
 
     if not data_path.exists():
-        print(f"❌ Data file not found: {data_path}")
+        print(f"[ERROR] Data file not found: {data_path}")
         print("Please run: python setup_database.py")
         return
 
     df = pl.read_csv(data_path)
-    print(f"✓ Loaded {len(df)} predictions")
+    print(f"[OK] Loaded {len(df)} predictions")
 
     # Step 2: Create age groups
-    print("\n🎯 Step 2: Creating customer segments...")
+    print("\n Step 2: Creating customer segments...")
 
     df_segments = df.with_columns(
         [
@@ -67,10 +67,10 @@ def main():
         ]
     )
 
-    print("✓ Created age_group and coverage_group segments")
+    print("[OK] Created age_group and coverage_group segments")
 
     # Step 3: Compare two age groups
-    print("\n🔍 Step 3: Comparing Young vs Elderly premiums...")
+    print("\n Step 3: Comparing Young vs Elderly premiums...")
 
     young = df_segments.filter(pl.col("age_group") == "Young")
     elderly = df_segments.filter(pl.col("age_group") == "Elderly")
@@ -104,7 +104,7 @@ def main():
     print(f"- Significant Difference: {result.is_significant}")
 
     # Step 4: Interpret the results
-    print("\n💡 Step 4: Interpreting the results...")
+    print("\n[INFO] Step 4: Interpreting the results...")
 
     young_mean = young["actual_premium"].mean()
     elderly_mean = elderly["actual_premium"].mean()
@@ -115,14 +115,14 @@ def main():
     print(f"- Difference: ${elderly_mean - young_mean:.2f}")
 
     if result.is_significant:
-        print("\n✓ The difference IS statistically significant (p < 0.05)")
+        print("\n[OK] The difference IS statistically significant (p < 0.05)")
         print("  We can be confident this difference is not due to chance")
     else:
-        print("\n✗ The difference is NOT statistically significant (p >= 0.05)")
+        print("\n[X] The difference is NOT statistically significant (p >= 0.05)")
         print("  The difference could be due to random variation")
 
     # Step 5: Understand effect size
-    print("\n📊 Step 5: Understanding effect size...")
+    print("\n Step 5: Understanding effect size...")
 
     effect_size = abs(result.effect_size)
 
@@ -150,7 +150,7 @@ def main():
     print("- > 0.8: Large")
 
     # Step 6: Compare all age groups
-    print("\n🔄 Step 6: Comparing all age group pairs...")
+    print("\n Step 6: Comparing all age group pairs...")
 
     age_groups = ["Young", "Middle", "Senior", "Elderly"]
 
@@ -178,7 +178,7 @@ def main():
             )
 
             mean_diff = g2_data["actual_premium"].mean() - g1_data["actual_premium"].mean()
-            sig_marker = "✓" if result.is_significant else "✗"
+            sig_marker = "[OK]" if result.is_significant else "[X]"
 
             comparison_name = f"{group1} vs {group2}"
             print(
@@ -187,7 +187,7 @@ def main():
             )
 
     # Step 7: Compare by coverage groups
-    print("\n📋 Step 7: Comparing coverage groups...")
+    print("\n Step 7: Comparing coverage groups...")
 
     low_cov = df_segments.filter(pl.col("coverage_group") == "Low")
     high_cov = df_segments.filter(pl.col("coverage_group") == "High")
@@ -216,12 +216,12 @@ def main():
     print(f"- Significant: {cov_result.is_significant}")
 
     # Step 8: Test selection (automatic vs manual)
-    print("\n🎲 Step 8: Understanding test selection...")
+    print("\n Step 8: Understanding test selection...")
 
     print("\nAutomatic Test Selection:")
     print("- Checks normality using Shapiro-Wilk test")
-    print("- If both groups are normal → t-test")
-    print("- If either group is non-normal → Mann-Whitney U test")
+    print("- If both groups are normal -> t-test")
+    print("- If either group is non-normal -> Mann-Whitney U test")
 
     print("\nManual Test Selection:")
     print(
@@ -239,7 +239,7 @@ def main():
     )
 
     # Step 9: Multiple comparisons consideration
-    print("\n⚠️  Step 9: Multiple comparisons consideration...")
+    print("\n[WARNING]  Step 9: Multiple comparisons consideration...")
 
     print("\nWhen performing multiple tests, consider:")
     print("- Bonferroni correction: Divide alpha by number of tests")
@@ -255,17 +255,17 @@ def main():
     print("- Use this stricter threshold to control false positives")
 
     # Step 10: Practical applications
-    print("\n🎯 Step 10: Practical applications...")
+    print("\n Step 10: Practical applications...")
 
     print("\nUse population testing for:")
-    print("✓ A/B testing (comparing control vs treatment groups)")
-    print("✓ Segment analysis (comparing customer segments)")
-    print("✓ Model monitoring (comparing baseline vs current data)")
-    print("✓ Quality control (comparing batches or time periods)")
-    print("✓ Feature importance (comparing groups with/without feature)")
+    print("[OK] A/B testing (comparing control vs treatment groups)")
+    print("[OK] Segment analysis (comparing customer segments)")
+    print("[OK] Model monitoring (comparing baseline vs current data)")
+    print("[OK] Quality control (comparing batches or time periods)")
+    print("[OK] Feature importance (comparing groups with/without feature)")
 
     # Step 11: Save results
-    print("\n💾 Step 11: Saving comparison results...")
+    print("\n Step 11: Saving comparison results...")
 
     output_dir = project_root / "outputs"
     output_dir.mkdir(exist_ok=True)
@@ -282,10 +282,10 @@ def main():
     )
 
     summary.write_csv(output_dir / "06_population_tests.csv")
-    print(f"✓ Results saved to: {output_dir / '06_population_tests.csv'}")
+    print(f"[OK] Results saved to: {output_dir / '06_population_tests.csv'}")
 
     # Step 12: Exercise
-    print("\n🎓 EXERCISE: Credit Score Analysis")
+    print("\n[EXERCISE] EXERCISE: Credit Score Analysis")
     print(
         """
     Analyze if credit scores differ significantly between groups:
@@ -301,7 +301,7 @@ def main():
     )
 
     print("\n" + "=" * 70)
-    print("✅ Tutorial Complete!")
+    print("[SUCCESS] Tutorial Complete!")
     print("=" * 70)
     print("\nKey Takeaways:")
     print("1. Statistical tests determine if differences are significant")

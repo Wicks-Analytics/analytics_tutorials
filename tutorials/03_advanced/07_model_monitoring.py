@@ -61,16 +61,16 @@ def main():
     print("=" * 70)
 
     # Step 1: Load baseline (training) data
-    print("\n📊 Step 1: Loading baseline data...")
+    print("\n Step 1: Loading baseline data...")
     data_path = project_root / "data" / "fraud_predictions.csv"
 
     if not data_path.exists():
-        print(f"❌ Data file not found: {data_path}")
+        print(f"[ERROR] Data file not found: {data_path}")
         print("Please run: python setup_database.py")
         return
 
     baseline_df = pl.read_csv(data_path)
-    print(f"✓ Loaded {len(baseline_df)} baseline predictions")
+    print(f"[OK] Loaded {len(baseline_df)} baseline predictions")
 
     # Split into baseline and current
     baseline = baseline_df.head(3000)
@@ -80,7 +80,7 @@ def main():
     print(f"- Current period: {len(current)} samples")
 
     # Step 2: Basic population comparison
-    print("\n🔍 Step 2: Comparing score distributions...")
+    print("\n Step 2: Comparing score distributions...")
 
     result = monitoring.compare_populations(
         baseline,
@@ -118,7 +118,7 @@ def main():
     print(f"- Significant Difference: {result.is_significant}")
 
     # Step 3: Interpret effect size
-    print("\n💡 Step 3: Interpreting effect size...")
+    print("\n[INFO] Step 3: Interpreting effect size...")
 
     effect_size = abs(result.effect_size)
 
@@ -139,7 +139,7 @@ def main():
     print(f"Recommended Action: {action}")
 
     # Step 4: Simulate data drift
-    print("\n⚠️  Step 4: Simulating data drift scenario...")
+    print("\n[WARNING]  Step 4: Simulating data drift scenario...")
 
     # Create drifted data
     drifted_df = generate_drifted_data(baseline, drift_amount=0.3)
@@ -162,11 +162,11 @@ def main():
     print(f"- Drift Detected: {drift_result.is_significant}")
 
     if drift_result.is_significant:
-        print("\n⚠️  WARNING: Significant drift detected!")
+        print("\n[WARNING]  WARNING: Significant drift detected!")
         print("   Model may need retraining")
 
     # Step 5: Monitor performance metrics over time
-    print("\n📈 Step 5: Monitoring performance over time...")
+    print("\n Step 5: Monitoring performance over time...")
 
     # Simulate monthly performance
     months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
@@ -214,7 +214,7 @@ def main():
         )
 
     # Step 6: Set up monitoring thresholds
-    print("\n🎯 Step 6: Setting up monitoring thresholds...")
+    print("\n Step 6: Setting up monitoring thresholds...")
 
     baseline_auc = monthly_metrics[0]["auc"]
 
@@ -231,14 +231,14 @@ def main():
     print(f"Performance Drop: {drop_pct:.1f}%")
 
     if drop_pct >= 10:
-        print("🔴 CRITICAL: Performance degradation detected!")
+        print("[RED] CRITICAL: Performance degradation detected!")
     elif drop_pct >= 5:
-        print("🟡 WARNING: Performance decline detected")
+        print("[YELLOW] WARNING: Performance decline detected")
     else:
-        print("🟢 OK: Performance within acceptable range")
+        print("[GREEN] OK: Performance within acceptable range")
 
     # Step 7: Feature drift analysis
-    print("\n📊 Step 7: Analyzing feature distributions...")
+    print("\n Step 7: Analyzing feature distributions...")
 
     # Compare score distributions
     print("\nScore Distribution Comparison:")
@@ -269,7 +269,7 @@ def main():
         print(f"{metric:<20} {baseline_val:<15.4f} {current_val:<15.4f} {change:+.4f}")
 
     # Step 8: Create monitoring report
-    print("\n📋 Step 8: Generating monitoring report...")
+    print("\n Step 8: Generating monitoring report...")
 
     report = {
         "timestamp": datetime.now().isoformat(),
@@ -289,7 +289,7 @@ def main():
     output_dir.mkdir(exist_ok=True)
     report_df.write_csv(output_dir / "07_monitoring_report.csv")
 
-    print(f"✓ Report saved to: {output_dir / '07_monitoring_report.csv'}")
+    print(f"[OK] Report saved to: {output_dir / '07_monitoring_report.csv'}")
     print("\nReport Summary:")
     for key, value in report.items():
         if isinstance(value, float):
@@ -298,7 +298,7 @@ def main():
             print(f"  {key}: {value}")
 
     # Step 9: Automated monitoring workflow
-    print("\n🤖 Step 9: Automated monitoring workflow example...")
+    print("\n Step 9: Automated monitoring workflow example...")
     print(
         """
     def monitor_model_performance(baseline_df, current_df, thresholds):
@@ -337,7 +337,7 @@ def main():
     )
 
     # Step 10: Exercise
-    print("\n🎓 EXERCISE: Build a Monitoring Dashboard")
+    print("\n[EXERCISE] EXERCISE: Build a Monitoring Dashboard")
     print(
         """
     Create a monitoring script that:
@@ -353,7 +353,7 @@ def main():
     )
 
     print("\n" + "=" * 70)
-    print("✅ Tutorial Complete!")
+    print("[SUCCESS] Tutorial Complete!")
     print("=" * 70)
     print("\nKey Takeaways:")
     print("1. Monitor both data drift and performance metrics")

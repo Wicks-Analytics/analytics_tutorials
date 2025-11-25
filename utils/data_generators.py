@@ -272,13 +272,13 @@ def generate_premium_predictions(n_samples: int = 5000) -> pl.DataFrame:
         + np.random.normal(0, 150, n_samples)
     ).clip(300, 10000)
 
-    # Model 1: Good predictions (R² ~0.85)
+    # Model 1: Good predictions (R^2 ~0.85)
     model1_predictions = actual_premiums + np.random.normal(0, 200, n_samples)
 
-    # Model 2: Moderate predictions (R² ~0.70)
+    # Model 2: Moderate predictions (R^2 ~0.70)
     model2_predictions = actual_premiums + np.random.normal(0, 400, n_samples)
 
-    # Model 3: Poor predictions (R² ~0.50)
+    # Model 3: Poor predictions (R^2 ~0.50)
     model3_predictions = actual_premiums + np.random.normal(0, 600, n_samples)
 
     # Generate policy IDs
@@ -313,22 +313,22 @@ if __name__ == "__main__":
     print("Generating insurance policies...")
     policies = generate_insurance_policies(10000)
     policies.write_csv(os.path.join(data_dir, "insurance_policies.csv"))
-    print(f"✓ Generated {len(policies)} policies")
+    print(f"[OK] Generated {len(policies)} policies")
 
     print("\nGenerating insurance claims...")
     claims = generate_insurance_claims(5000, policies)
     claims.write_csv(os.path.join(data_dir, "insurance_claims.csv"))
-    print(f"✓ Generated {len(claims)} claims")
+    print(f"[OK] Generated {len(claims)} claims")
 
     print("\nGenerating fraud predictions...")
     fraud_preds = generate_fraud_predictions(5000)
     fraud_preds.write_csv(os.path.join(data_dir, "fraud_predictions.csv"))
-    print(f"✓ Generated {len(fraud_preds)} fraud predictions")
+    print(f"[OK] Generated {len(fraud_preds)} fraud predictions")
 
     print("\nGenerating premium predictions...")
     premium_preds = generate_premium_predictions(5000)
     premium_preds.write_csv(os.path.join(data_dir, "premium_predictions.csv"))
-    print(f"✓ Generated {len(premium_preds)} premium predictions")
+    print(f"[OK] Generated {len(premium_preds)} premium predictions")
 
-    print("\n✅ All datasets generated successfully!")
-    print(f"📁 Data saved to: {data_dir}")
+    print("\n[SUCCESS] All datasets generated successfully!")
+    print(f"Data saved to: {data_dir}")

@@ -36,6 +36,7 @@ dependencies = [
     "connectorx>=0.3.0",
     "faker>=18.0.0",
     "python-dotenv>=1.0.0",
+    "pyarrow>=8.0.0",
 ]
 
 [project.optional-dependencies]

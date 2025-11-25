@@ -31,12 +31,12 @@ def main():
     # Create data directory
     data_dir = project_root / "data"
     data_dir.mkdir(exist_ok=True)
-    print(f"\n✓ Data directory: {data_dir}")
+    print(f"\n[OK] Data directory: {data_dir}")
 
     # Create outputs directory
     outputs_dir = project_root / "outputs"
     outputs_dir.mkdir(exist_ok=True)
-    print(f"✓ Outputs directory: {outputs_dir}")
+    print(f"[OK] Outputs directory: {outputs_dir}")
 
     # Step 1: Generate CSV files
     print("\n" + "=" * 70)
@@ -46,22 +46,22 @@ def main():
     print("\nGenerating insurance policies...")
     policies = generate_insurance_policies(10000)
     policies.write_csv(data_dir / "insurance_policies.csv")
-    print(f"✓ Generated {len(policies)} policies → insurance_policies.csv")
+    print(f"[OK] Generated {len(policies)} policies -> insurance_policies.csv")
 
     print("\nGenerating insurance claims...")
     claims = generate_insurance_claims(5000, policies)
     claims.write_csv(data_dir / "insurance_claims.csv")
-    print(f"✓ Generated {len(claims)} claims → insurance_claims.csv")
+    print(f"[OK] Generated {len(claims)} claims -> insurance_claims.csv")
 
     print("\nGenerating fraud predictions...")
     fraud_preds = generate_fraud_predictions(5000)
     fraud_preds.write_csv(data_dir / "fraud_predictions.csv")
-    print(f"✓ Generated {len(fraud_preds)} predictions → fraud_predictions.csv")
+    print(f"[OK] Generated {len(fraud_preds)} predictions -> fraud_predictions.csv")
 
     print("\nGenerating premium predictions...")
     premium_preds = generate_premium_predictions(5000)
     premium_preds.write_csv(data_dir / "premium_predictions.csv")
-    print(f"✓ Generated {len(premium_preds)} predictions → premium_predictions.csv")
+    print(f"[OK] Generated {len(premium_preds)} predictions -> premium_predictions.csv")
 
     # Step 2: Create SQLite database
     print("\n" + "=" * 70)
@@ -73,9 +73,9 @@ def main():
 
     try:
         create_sqlite_tables(str(db_path))
-        print("\n✓ SQLite database created successfully")
+        print("\n[OK] SQLite database created successfully")
     except Exception as e:
-        print(f"\n❌ Error creating database: {e}")
+        print(f"\n[ERROR] Error creating database: {e}")
         return
 
     # Step 3: Summary
@@ -83,7 +83,7 @@ def main():
     print("Setup Complete!")
     print("=" * 70)
 
-    print("\n📁 Generated Files:")
+    print("\nGenerated Files:")
     print(f"   CSV Files: {data_dir}")
     print(f"   - insurance_policies.csv ({len(policies)} rows)")
     print(f"   - insurance_claims.csv ({len(claims)} rows)")
@@ -95,7 +95,7 @@ def main():
     print("   - fraud_predictions table")
     print("   - premium_predictions table")
 
-    print("\n🚀 Next Steps:")
+    print("\nNext Steps:")
     print("   1. Install analytics_store:")
     print("      pip install git+https://github.com/Wicks-Analytics/analytics_store")
     print("   2. Run beginner tutorials:")
@@ -104,7 +104,7 @@ def main():
     print("      python tutorials/01_beginner/03_regression_metrics.py")
     print("   3. Explore intermediate and advanced tutorials")
 
-    print("\n✅ Setup successful! Happy learning!")
+    print("\n[SUCCESS] Setup successful! Happy learning!")
 
 
 if __name__ == "__main__":

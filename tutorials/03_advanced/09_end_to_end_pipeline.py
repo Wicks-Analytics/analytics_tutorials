@@ -46,13 +46,13 @@ class InsuranceAnalyticsPipeline:
 
         # Load fraud predictions
         self.fraud_data = load_from_sql("SELECT * FROM fraud_predictions", self.connection_string)
-        print(f"✓ Loaded {len(self.fraud_data)} fraud predictions")
+        print(f"[OK] Loaded {len(self.fraud_data)} fraud predictions")
 
         # Load premium predictions
         self.premium_data = load_from_sql(
             "SELECT * FROM premium_predictions", self.connection_string
         )
-        print(f"✓ Loaded {len(self.premium_data)} premium predictions")
+        print(f"[OK] Loaded {len(self.premium_data)} premium predictions")
 
         # Split into baseline and current for monitoring
         split_point = int(len(self.fraud_data) * 0.7)
@@ -60,7 +60,7 @@ class InsuranceAnalyticsPipeline:
         self.fraud_current = self.fraud_data.tail(len(self.fraud_data) - split_point)
 
         print(
-            f"✓ Split into baseline ({len(self.fraud_baseline)}) and current ({len(self.fraud_current)})"
+            f"[OK] Split into baseline ({len(self.fraud_baseline)}) and current ({len(self.fraud_current)})"
         )
 
     def evaluate_classification_models(self):
@@ -101,7 +101,7 @@ class InsuranceAnalyticsPipeline:
 
         # Find best model
         best_model = max(self.results["classification"], key=lambda x: x["auc"])
-        print(f"\n✓ Best Model: {best_model['model']} (AUC: {best_model['auc']:.4f})")
+        print(f"\n[OK] Best Model: {best_model['model']} (AUC: {best_model['auc']:.4f})")
         self.results["best_classification_model"] = best_model["model"]
 
     def evaluate_regression_models(self):
@@ -139,11 +139,11 @@ class InsuranceAnalyticsPipeline:
             print(f"\n{model_col}:")
             print(f"  RMSE: ${result['rmse']:.2f}")
             print(f"  MAE: ${result['mae']:.2f}")
-            print(f"  R²: {result['r2']:.4f}")
+            print(f"  R^2: {result['r2']:.4f}")
 
         # Find best model
         best_model = max(self.results["regression"], key=lambda x: x["r2"])
-        print(f"\n✓ Best Model: {best_model['model']} (R²: {best_model['r2']:.4f})")
+        print(f"\n[OK] Best Model: {best_model['model']} (R^2: {best_model['r2']:.4f})")
         self.results["best_regression_model"] = best_model["model"]
 
     def monitor_drift(self):
@@ -179,9 +179,9 @@ class InsuranceAnalyticsPipeline:
         print(f"  Effect Size: {drift_result.effect_size:.4f}")
 
         if drift_result.is_significant:
-            print("  ⚠️  WARNING: Significant drift detected!")
+            print("  [WARNING]  WARNING: Significant drift detected!")
         else:
-            print("  ✓ No significant drift detected")
+            print("  [OK] No significant drift detected")
 
     def check_performance_degradation(self):
         """Step 5: Check for performance degradation."""
@@ -215,11 +215,11 @@ class InsuranceAnalyticsPipeline:
         print(f"  Drop: {auc_drop:.4f} ({drop_pct:.1f}%)")
 
         if drop_pct >= 10:
-            print("  🔴 CRITICAL: Significant performance degradation!")
+            print("  [RED] CRITICAL: Significant performance degradation!")
         elif drop_pct >= 5:
-            print("  🟡 WARNING: Performance decline detected")
+            print("  [YELLOW] WARNING: Performance decline detected")
         else:
-            print("  🟢 OK: Performance stable")
+            print("  [GREEN] OK: Performance stable")
 
     def generate_report(self):
         """Step 6: Generate comprehensive report."""
@@ -253,7 +253,7 @@ class InsuranceAnalyticsPipeline:
         for model in self.results["regression"]:
             report_lines.append(f"\n{model['model']}:")
             report_lines.append(f"  RMSE: ${model['rmse']:.2f}")
-            report_lines.append(f"  R²: {model['r2']:.4f}")
+            report_lines.append(f"  R^2: {model['r2']:.4f}")
 
         report_lines.append(f"\nBest Model: {self.results['best_regression_model']}")
         report_lines.append("")
@@ -265,7 +265,9 @@ class InsuranceAnalyticsPipeline:
         report_lines.append(f"Test Type: {drift['test_type']}")
         report_lines.append(f"P-value: {drift['p_value']:.6f}")
         report_lines.append(f"Effect Size: {drift['effect_size']:.4f}")
-        report_lines.append(f"Drift Detected: {'YES ⚠️' if drift['is_significant'] else 'NO ✓'}")
+        report_lines.append(
+            f"Drift Detected: {'YES [WARNING]' if drift['is_significant'] else 'NO [OK]'}"
+        )
         report_lines.append("")
 
         # Performance monitoring
@@ -277,11 +279,11 @@ class InsuranceAnalyticsPipeline:
         report_lines.append(f"Performance Drop: {perf['drop_percentage']:.1f}%")
 
         if perf["drop_percentage"] >= 10:
-            status = "CRITICAL 🔴"
+            status = "CRITICAL [RED]"
         elif perf["drop_percentage"] >= 5:
-            status = "WARNING 🟡"
+            status = "WARNING [YELLOW]"
         else:
-            status = "OK 🟢"
+            status = "OK [GREEN]"
         report_lines.append(f"Status: {status}")
         report_lines.append("")
 
@@ -290,15 +292,15 @@ class InsuranceAnalyticsPipeline:
         report_lines.append("-" * 70)
 
         if drift["is_significant"]:
-            report_lines.append("• Data drift detected - investigate input data changes")
+            report_lines.append("- Data drift detected - investigate input data changes")
 
         if perf["drop_percentage"] >= 10:
-            report_lines.append("• Critical performance drop - retrain model immediately")
+            report_lines.append("- Critical performance drop - retrain model immediately")
         elif perf["drop_percentage"] >= 5:
-            report_lines.append("• Performance declining - schedule model retraining")
+            report_lines.append("- Performance declining - schedule model retraining")
 
         if not drift["is_significant"] and perf["drop_percentage"] < 5:
-            report_lines.append("• All systems normal - continue monitoring")
+            report_lines.append("- All systems normal - continue monitoring")
 
         report_lines.append("")
         report_lines.append("=" * 70)
@@ -315,7 +317,7 @@ class InsuranceAnalyticsPipeline:
         with open(report_file, "w") as f:
             f.write(report_text)
 
-        print(f"\n✓ Report saved to: {report_file}")
+        print(f"\n[OK] Report saved to: {report_file}")
 
         # Save metrics as CSV
         metrics_file = (
@@ -336,7 +338,7 @@ class InsuranceAnalyticsPipeline:
         )
 
         metrics_df.write_csv(metrics_file)
-        print(f"✓ Metrics saved to: {metrics_file}")
+        print(f"[OK] Metrics saved to: {metrics_file}")
 
     def run(self):
         """Execute the complete pipeline."""
@@ -354,11 +356,11 @@ class InsuranceAnalyticsPipeline:
             self.generate_report()
 
             print("\n" + "=" * 70)
-            print("✅ PIPELINE COMPLETED SUCCESSFULLY")
+            print("[SUCCESS] PIPELINE COMPLETED SUCCESSFULLY")
             print("=" * 70)
 
         except Exception as e:
-            print(f"\n❌ PIPELINE FAILED: {e}")
+            print(f"\n[ERROR] PIPELINE FAILED: {e}")
             raise
 
 
@@ -372,7 +374,7 @@ def main():
     # Check if database exists
     db_path = project_root / "data" / "insurance.db"
     if not db_path.exists():
-        print(f"\n❌ Database not found: {db_path}")
+        print(f"\n[ERROR] Database not found: {db_path}")
         print("Please run: python setup_database.py")
         return
 
@@ -411,7 +413,7 @@ def main():
     """
     )
 
-    print("\n🎓 EXERCISE: Extend the Pipeline")
+    print("\n[EXERCISE] EXERCISE: Extend the Pipeline")
     print(
         """
     Enhance this pipeline with:
@@ -428,20 +430,20 @@ def main():
     )
 
     print("\n" + "=" * 70)
-    print("✅ Tutorial Complete!")
+    print("[SUCCESS] Tutorial Complete!")
     print("=" * 70)
     print("\nCongratulations! You've completed all tutorials!")
     print("\nYou now know how to:")
-    print("✓ Evaluate classification and regression models")
-    print("✓ Load data from various sources (CSV, SQL, Snowflake)")
-    print("✓ Compare models and populations statistically")
-    print("✓ Monitor for drift and performance degradation")
-    print("✓ Build production-ready analytics pipelines")
+    print("[OK] Evaluate classification and regression models")
+    print("[OK] Load data from various sources (CSV, SQL, Snowflake)")
+    print("[OK] Compare models and populations statistically")
+    print("[OK] Monitor for drift and performance degradation")
+    print("[OK] Build production-ready analytics pipelines")
     print("\nNext steps:")
     print("- Apply these techniques to your own data")
     print("- Build custom pipelines for your use cases")
     print("- Contribute to the analytics_store package")
-    print("\nHappy analyzing! 🎉")
+    print("\nHappy analyzing! ")
 
 
 if __name__ == "__main__":

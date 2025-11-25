@@ -33,28 +33,28 @@ def main():
     print("=" * 70)
 
     # Step 1: Load the fraud predictions data
-    print("\n📊 Step 1: Loading fraud prediction data...")
+    print("\n Step 1: Loading fraud prediction data...")
     data_path = project_root / "data" / "fraud_predictions.csv"
 
     if not data_path.exists():
-        print(f"❌ Data file not found: {data_path}")
+        print(f"[ERROR] Data file not found: {data_path}")
         print("Please run: python utils/data_generators.py")
         return
 
     df = pl.read_csv(data_path)
-    print(f"✓ Loaded {len(df)} predictions")
+    print(f"[OK] Loaded {len(df)} predictions")
     print("\nData preview:")
     print(df.head())
 
     # Step 2: Calculate basic statistics
-    print("\n📈 Step 2: Understanding the data...")
+    print("\n Step 2: Understanding the data...")
     fraud_rate = df["actual_fraud"].mean()
     print(f"Overall fraud rate: {fraud_rate:.2%}")
     print(f"Total frauds: {df['actual_fraud'].sum()}")
     print(f"Total non-frauds: {(1 - df['actual_fraud']).sum()}")
 
     # Step 3: Calculate lift curve for Model 1
-    print("\n🎯 Step 3: Calculating lift curve for Model 1...")
+    print("\n Step 3: Calculating lift curve for Model 1...")
     lift_result = model_validation.calculate_lift_curve(
         df,
         target_column="actual_fraud",
@@ -68,7 +68,7 @@ def main():
     print(f"- Number of bins: {len(lift_result.score_lift_values)}")
 
     # Step 4: Examine lift by decile
-    print("\n📊 Step 4: Examining lift by decile...")
+    print("\n Step 4: Examining lift by decile...")
     print("\nDecile | Fraud Rate | Lift | Cumulative Lift")
     print("-" * 50)
     for i, (rate, lift, cum_lift) in enumerate(
@@ -82,7 +82,7 @@ def main():
         print(f"  {i:2d}   |   {rate:.4f}   | {lift:.2f} |      {cum_lift:.2f}")
 
     # Step 5: Interpret the results
-    print("\n💡 Step 5: Interpreting the results...")
+    print("\n[INFO] Step 5: Interpreting the results...")
     top_decile_lift = lift_result.score_lift_values[0]
     top_decile_rate = lift_result.score_target_rates[0]
 
@@ -93,7 +93,7 @@ def main():
     print(f"  {top_decile_lift:.1f}x more fraud than random selection")
 
     # Step 6: Convert results to DataFrame for further analysis
-    print("\n📋 Step 6: Converting results to DataFrame...")
+    print("\n Step 6: Converting results to DataFrame...")
     lift_df = lift_result.to_polars()
     print("\nLift curve data:")
     print(lift_df)
@@ -102,10 +102,10 @@ def main():
     output_dir = project_root / "outputs"
     output_dir.mkdir(exist_ok=True)
     lift_df.write_csv(output_dir / "01_lift_results.csv")
-    print(f"\n✓ Results saved to: {output_dir / '01_lift_results.csv'}")
+    print(f"\n[OK] Results saved to: {output_dir / '01_lift_results.csv'}")
 
     # Step 7: Create visualization
-    print("\n📊 Step 7: Creating lift curve visualization...")
+    print("\n Step 7: Creating lift curve visualization...")
     try:
         validation_plots.plot_lift_curve(
             df,
@@ -114,13 +114,13 @@ def main():
             n_bins=10,
             title="Fraud Detection Model - Lift Curve",
         )
-        print("✓ Lift curve plot displayed")
+        print("[OK] Lift curve plot displayed")
         print("(Close the plot window to continue)")
     except Exception as e:
-        print(f"⚠ Could not create plot: {e}")
+        print(f"[WARNING] Could not create plot: {e}")
 
     # Step 8: Exercise - Compare with Model 2
-    print("\n🎓 EXERCISE: Try calculating lift for Model 2")
+    print("\n[EXERCISE] EXERCISE: Try calculating lift for Model 2")
     print("Hint: Use 'model2_fraud_score' as the score_column")
     print("\nUncomment the code below to see the solution:")
     print(
@@ -137,7 +137,7 @@ def main():
     )
 
     print("\n" + "=" * 70)
-    print("✅ Tutorial Complete!")
+    print("[SUCCESS] Tutorial Complete!")
     print("=" * 70)
     print("\nKey Takeaways:")
     print("1. Lift curves show how well a model ranks predictions")

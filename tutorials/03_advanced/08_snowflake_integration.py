@@ -45,7 +45,7 @@ def check_snowflake_config():
     missing = [var for var in required_vars if not os.getenv(var)]
 
     if missing:
-        print("❌ Missing Snowflake configuration:")
+        print("[ERROR] Missing Snowflake configuration:")
         for var in missing:
             print(f"   - {var}")
         print("\nPlease set these environment variables or update .env file")
@@ -62,10 +62,10 @@ def main():
     print("=" * 70)
 
     # Step 1: Check configuration
-    print("\n🔧 Step 1: Checking Snowflake configuration...")
+    print("\n Step 1: Checking Snowflake configuration...")
 
     if not check_snowflake_config():
-        print("\n💡 For this tutorial, you need:")
+        print("\n[INFO] For this tutorial, you need:")
         print("   1. A Snowflake account")
         print("   2. Credentials set in environment variables")
         print("   3. Data loaded in Snowflake tables")
@@ -85,22 +85,22 @@ def main():
         demo_mode = True
     else:
         demo_mode = False
-        print("✓ Snowflake configuration found")
+        print("[OK] Snowflake configuration found")
 
     # Step 2: Connect to Snowflake
     if not demo_mode:
-        print("\n🔌 Step 2: Connecting to Snowflake...")
+        print("\n Step 2: Connecting to Snowflake...")
         try:
             conn_params = get_snowflake_connection()
-            print(f"✓ Connecting to account: {conn_params['account']}")
-            print(f"✓ Using warehouse: {conn_params['warehouse']}")
-            print(f"✓ Database: {conn_params['database']}")
+            print(f"[OK] Connecting to account: {conn_params['account']}")
+            print(f"[OK] Using warehouse: {conn_params['warehouse']}")
+            print(f"[OK] Database: {conn_params['database']}")
         except Exception as e:
-            print(f"❌ Connection error: {e}")
+            print(f"[ERROR] Connection error: {e}")
             demo_mode = True
 
     # Step 3: Efficient data loading strategies
-    print("\n📥 Step 3: Efficient Data Loading Strategies...")
+    print("\n Step 3: Efficient Data Loading Strategies...")
 
     print("\nStrategy 1: Use SELECT with specific columns")
     print(
@@ -155,7 +155,7 @@ def main():
     )
 
     # Step 4: Sample queries for analytics
-    print("\n🎯 Step 4: Sample Queries for Analytics...")
+    print("\n Step 4: Sample Queries for Analytics...")
 
     print("\nQuery 1: Load fraud predictions for model evaluation")
     fraud_query = """
@@ -209,7 +209,7 @@ def main():
     print(complex_query)
 
     # Step 5: Demo with local data
-    print("\n📊 Step 5: Demo Analysis (using local data)...")
+    print("\n Step 5: Demo Analysis (using local data)...")
 
     # Load local data to simulate Snowflake data
     data_path = project_root / "data" / "fraud_predictions.csv"
@@ -219,7 +219,7 @@ def main():
         df = pl.read_csv(data_path)
 
         # Perform analysis
-        print(f"✓ Loaded {len(df)} records")
+        print(f"[OK] Loaded {len(df)} records")
 
         # Calculate metrics
         lift_result = model_validation.calculate_lift_curve(
@@ -238,27 +238,27 @@ def main():
         print(f"- AUC Score: {roc_result.auc_score:.4f}")
         print(f"- Optimal threshold: {roc_result.optimal_threshold:.4f}")
     else:
-        print("⚠ Sample data not found. Run: python utils/data_generators.py")
+        print("[WARNING] Sample data not found. Run: python utils/data_generators.py")
 
     # Step 6: Best practices
-    print("\n📚 Step 6: Snowflake Best Practices...")
+    print("\n Step 6: Snowflake Best Practices...")
     print(
         """
-    ✓ Use warehouse size appropriate for your query
-    ✓ Filter and aggregate in Snowflake, not in Python
-    ✓ Use LIMIT for exploratory queries
-    ✓ Consider result caching for repeated queries
-    ✓ Use clustering keys for large tables
-    ✓ Monitor query costs and optimize expensive queries
-    ✓ Use appropriate data types (avoid SELECT *)
-    ✓ Consider materialized views for complex aggregations
-    ✓ Use query tags for cost tracking
-    ✓ Implement incremental loading for large datasets
+    [OK] Use warehouse size appropriate for your query
+    [OK] Filter and aggregate in Snowflake, not in Python
+    [OK] Use LIMIT for exploratory queries
+    [OK] Consider result caching for repeated queries
+    [OK] Use clustering keys for large tables
+    [OK] Monitor query costs and optimize expensive queries
+    [OK] Use appropriate data types (avoid SELECT *)
+    [OK] Consider materialized views for complex aggregations
+    [OK] Use query tags for cost tracking
+    [OK] Implement incremental loading for large datasets
     """
     )
 
     # Step 7: Cost optimization
-    print("\n💰 Step 7: Cost Optimization Tips...")
+    print("\n Step 7: Cost Optimization Tips...")
     print(
         """
     1. Warehouse Management:
@@ -285,7 +285,7 @@ def main():
     )
 
     # Step 8: Incremental loading pattern
-    print("\n⚡ Step 8: Incremental Loading Pattern...")
+    print("\n Step 8: Incremental Loading Pattern...")
     print(
         """
     # Load only new data since last run
@@ -313,7 +313,7 @@ def main():
     )
 
     # Step 9: Error handling
-    print("\n🛡️ Step 9: Error Handling...")
+    print("\n Step 9: Error Handling...")
     print(
         """
     try:
@@ -331,7 +331,7 @@ def main():
     )
 
     # Step 10: Exercise
-    print("\n🎓 EXERCISE: Build a Snowflake Analytics Pipeline")
+    print("\n[EXERCISE] EXERCISE: Build a Snowflake Analytics Pipeline")
     print(
         """
     Create a script that:
@@ -346,7 +346,7 @@ def main():
     )
 
     print("\n" + "=" * 70)
-    print("✅ Tutorial Complete!")
+    print("[SUCCESS] Tutorial Complete!")
     print("=" * 70)
     print("\nKey Takeaways:")
     print("1. Push computation to Snowflake when possible")
@@ -356,7 +356,7 @@ def main():
     print("5. Use proper error handling and connection management")
     print("\nNext: Tutorial 09 - End-to-End Pipeline")
 
-    print("\n📖 Additional Resources:")
+    print("\n Additional Resources:")
     print("   - Snowflake Python Connector docs")
     print("   - Polars database integration guide")
     print("   - Snowflake query optimization guide")

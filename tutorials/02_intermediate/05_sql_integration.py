@@ -35,7 +35,7 @@ def main():
     print("=" * 70)
 
     # Step 1: Set up SQLite database
-    print("\n📊 Step 1: Setting up SQLite database...")
+    print("\n Step 1: Setting up SQLite database...")
     db_path = project_root / "data" / "insurance.db"
 
     if not db_path.exists():
@@ -43,29 +43,29 @@ def main():
         try:
             create_sqlite_tables(str(db_path))
         except Exception as e:
-            print(f"❌ Error creating database: {e}")
+            print(f"[ERROR] Error creating database: {e}")
             print("Make sure you have run: python utils/data_generators.py")
             return
     else:
-        print(f"✓ Database already exists at: {db_path}")
+        print(f"[OK] Database already exists at: {db_path}")
 
     # Step 2: Connect to database
-    print("\n🔌 Step 2: Connecting to database...")
+    print("\n Step 2: Connecting to database...")
     connection_string = get_sqlite_connection(str(db_path))
     print(f"Connection string: {connection_string}")
 
     # Step 3: Load data using SQL queries
-    print("\n📥 Step 3: Loading data from SQL...")
+    print("\n Step 3: Loading data from SQL...")
 
     # Simple query
     print("\n3a. Loading all policies...")
     policies_df = load_from_sql("SELECT * FROM policies", connection_string)
-    print(f"✓ Loaded {len(policies_df)} policies")
+    print(f"[OK] Loaded {len(policies_df)} policies")
     print("\nFirst few rows:")
     print(policies_df.head())
 
     # Step 4: Filtered query
-    print("\n📋 Step 4: Using SQL filters...")
+    print("\n Step 4: Using SQL filters...")
 
     # Load only California policies
     ca_policies = load_from_sql(
@@ -76,10 +76,10 @@ def main():
         """,
         connection_string,
     )
-    print(f"✓ Loaded {len(ca_policies)} California policies (age >= 30)")
+    print(f"[OK] Loaded {len(ca_policies)} California policies (age >= 30)")
 
     # Step 5: Aggregated query
-    print("\n📊 Step 5: Loading aggregated data...")
+    print("\n Step 5: Loading aggregated data...")
 
     policy_summary = load_from_sql(
         """
@@ -100,7 +100,7 @@ def main():
     print(policy_summary)
 
     # Step 6: Join queries
-    print("\n🔗 Step 6: Loading data with joins...")
+    print("\n Step 6: Loading data with joins...")
 
     claims_with_policies = load_from_sql(
         """
@@ -120,12 +120,12 @@ def main():
         """,
         connection_string,
     )
-    print(f"✓ Loaded {len(claims_with_policies)} approved claims with policy details")
+    print(f"[OK] Loaded {len(claims_with_policies)} approved claims with policy details")
     print("\nSample joined data:")
     print(claims_with_policies.head())
 
     # Step 7: Use loaded data with analytics_store
-    print("\n🎯 Step 7: Analyzing fraud predictions from database...")
+    print("\n Step 7: Analyzing fraud predictions from database...")
 
     fraud_data = load_from_sql("SELECT * FROM fraud_predictions", connection_string)
 
@@ -139,7 +139,7 @@ def main():
     print(f"- Top decile lift: {lift_result.score_lift_values[0]:.2f}x")
 
     # Step 8: Efficient loading strategies
-    print("\n⚡ Step 8: Efficient data loading strategies...")
+    print("\n Step 8: Efficient data loading strategies...")
 
     print("\nStrategy 1: Load only needed columns")
     limited_cols = load_from_sql(
@@ -150,7 +150,7 @@ def main():
         """,
         connection_string,
     )
-    print(f"✓ Loaded {len(limited_cols)} rows with 4 columns")
+    print(f"[OK] Loaded {len(limited_cols)} rows with 4 columns")
 
     print("\nStrategy 2: Use WHERE clauses to filter in database")
     print("(Faster than loading all data and filtering in Python)")
@@ -161,7 +161,7 @@ def main():
         """,
         connection_string,
     )
-    print(f"✓ Loaded {len(recent_claims)} recent claims")
+    print(f"[OK] Loaded {len(recent_claims)} recent claims")
 
     print("\nStrategy 3: Use aggregations in SQL when possible")
     monthly_stats = load_from_sql(
@@ -182,7 +182,7 @@ def main():
     print(monthly_stats)
 
     # Step 9: Save results back to database
-    print("\n💾 Step 9: Writing results back to database...")
+    print("\n Step 9: Writing results back to database...")
 
     # Calculate metrics and save
     premium_data = load_from_sql("SELECT * FROM premium_predictions LIMIT 1000", connection_string)
@@ -207,7 +207,7 @@ def main():
             table_name="model_metrics", connection=conn, if_table_exists="replace"
         )
 
-    print("✓ Metrics saved to 'model_metrics' table")
+    print("[OK] Metrics saved to 'model_metrics' table")
 
     # Verify
     saved_metrics = load_from_sql("SELECT * FROM model_metrics", connection_string)
@@ -215,21 +215,21 @@ def main():
     print(saved_metrics)
 
     # Step 10: Best practices
-    print("\n📚 Step 10: Best Practices Summary...")
+    print("\n Step 10: Best Practices Summary...")
     print(
         """
-    ✓ Use SQL WHERE clauses to filter data before loading
-    ✓ Select only the columns you need
-    ✓ Use SQL aggregations when possible (faster than Python)
-    ✓ For large datasets, consider pagination or chunking
-    ✓ Use indexes on frequently queried columns
-    ✓ Close connections when done (handled automatically here)
-    ✓ Use parameterized queries to prevent SQL injection
+    [OK] Use SQL WHERE clauses to filter data before loading
+    [OK] Select only the columns you need
+    [OK] Use SQL aggregations when possible (faster than Python)
+    [OK] For large datasets, consider pagination or chunking
+    [OK] Use indexes on frequently queried columns
+    [OK] Close connections when done (handled automatically here)
+    [OK] Use parameterized queries to prevent SQL injection
     """
     )
 
     # Step 11: Exercise
-    print("\n🎓 EXERCISE: Complex Query Analysis")
+    print("\n[EXERCISE] EXERCISE: Complex Query Analysis")
     print("\nTry this exercise:")
     print(
         """
@@ -252,7 +252,7 @@ def main():
     )
 
     print("\n" + "=" * 70)
-    print("✅ Tutorial Complete!")
+    print("[SUCCESS] Tutorial Complete!")
     print("=" * 70)
     print("\nKey Takeaways:")
     print("1. Polars can efficiently load data from SQL databases")
@@ -262,7 +262,7 @@ def main():
     print("\nNext: Tutorial 06 - Population Testing")
 
     # Note about other databases
-    print("\n💡 Note: For PostgreSQL or MySQL:")
+    print("\n[INFO] Note: For PostgreSQL or MySQL:")
     print("   - Update connection string in utils/database_helpers.py")
     print("   - Install appropriate driver (psycopg2 or pymysql)")
     print("   - Use get_postgres_connection() or similar")
