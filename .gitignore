@@ -1,0 +1,185 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.venv
+
+# uv
+uv.lock
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.code-workspace
+.history/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+.jupyter/
+jupyter_notebook_config.py
+
+# Data files (generated)
+data/*.csv
+data/*.db
+data/*.parquet
+data/*.json
+data/*.xlsx
+data/*.xls
+data/*.feather
+data/*.arrow
+*.duckdb
+*.duckdb.wal
+
+# Output files
+outputs/
+*.png
+*.jpg
+*.jpeg
+*.pdf
+*.html
+*.svg
+*.gif
+*.bmp
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.tox/
+.nox/
+.hypothesis/
+*.cover
+*.py,cover
+.cache
+nosetests.xml
+test-results/
+*.test
+
+# Pre-commit
+.pre-commit-config.yaml.bak
+
+# Ruff
+.ruff_cache/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyright
+.pyright/
+
+# Documentation
+docs/_build/
+docs/.doctrees/
+site/
+.readthedocs.yml
+
+# Package managers
+poetry.lock
+Pipfile.lock
+pdm.lock
+
+# Profiling
+*.prof
+*.lprof
+.prof/
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# macOS
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+.directory
+.Trash-*
+
+# Secrets and credentials
+secrets/
+credentials/
+*.pem
+*.key
+*.cert
+*.crt
+id_rsa*
+
+# Model files (large binary files)
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.joblib
+*.model
+*.weights
+
+# Notebooks with outputs (optional - uncomment if needed)
+# *-checkpoint.ipynb

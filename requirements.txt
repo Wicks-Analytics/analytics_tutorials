@@ -1,0 +1,31 @@
+# Core dependencies
+polars>=0.20.0
+numpy>=1.21.0
+matplotlib>=3.4.0
+scipy>=1.7.0
+seaborn>=0.12.0
+scikit-learn>=1.0.0
+
+# Analytics store package
+# Install with: pip install git+https://github.com/Wicks-Analytics/analytics_store
+# Or install from local path: pip install -e ../analytics_store
+
+# Database connectors
+sqlalchemy>=2.0.0
+psycopg2-binary>=2.9.0  # PostgreSQL
+pymysql>=1.0.0  # MySQL
+connectorx>=0.3.0  # Fast database connector for Polars
+
+# Snowflake connector (optional - for advanced tutorials)
+snowflake-connector-python>=3.0.0
+snowflake-sqlalchemy>=1.5.0
+
+# Data generation and utilities
+faker>=18.0.0  # For generating realistic dummy data
+python-dotenv>=1.0.0  # For environment variable management
+
+# Jupyter support
+jupyter>=1.0.0
+ipykernel>=6.0.0
+notebook>=6.4.0
+jupyterlab>=3.0.0
