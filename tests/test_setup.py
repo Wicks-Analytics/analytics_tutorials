@@ -70,9 +70,9 @@ def test_polars_version():
     major = int(version_parts[0])
     minor = int(version_parts[1])
 
-    assert (major > 0) or (major == 0 and minor >= 20), (
-        f"Polars version {pl.__version__} is too old, need 0.20.0 or higher"
-    )
+    assert (major > 0) or (
+        major == 0 and minor >= 20
+    ), f"Polars version {pl.__version__} is too old, need 0.20.0 or higher"
 
 
 def test_numpy_basic_operations():
