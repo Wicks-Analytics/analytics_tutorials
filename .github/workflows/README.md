@@ -11,6 +11,7 @@ Runs on every push and pull request to `main` and `develop` branches.
 **Jobs:**
 
 1. **lint-and-format**
+   - Installs uv package manager via direct shell script
    - Runs Ruff linter to check code quality
    - Runs Ruff formatter to check code formatting
    - Runs Black to verify consistent formatting
@@ -19,6 +20,7 @@ Runs on every push and pull request to `main` and `develop` branches.
 2. **test**
    - Tests across multiple Python versions (3.8-3.12)
    - Tests on multiple OS platforms (Ubuntu, Windows, macOS)
+   - Installs uv with platform-specific scripts (Unix/Windows)
    - Generates test data with `setup_database.py`
    - Runs pytest with coverage reporting
    - Uploads coverage to Codecov (for Ubuntu + Python 3.11)
@@ -27,6 +29,8 @@ Runs on every push and pull request to `main` and `develop` branches.
    - Validates tutorial script syntax
    - Runs the getting started tutorial to ensure basic functionality
    - Ensures tutorials are executable
+
+**Note:** The workflow uses direct uv installation scripts instead of the GitHub Action to ensure reliability across all platforms.
 
 ## Running CI Checks Locally
 
