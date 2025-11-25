@@ -387,23 +387,23 @@ def main():
     print(
         """
     This pipeline demonstrates:
-    
+
     1. Data Loading
        - Centralized data access from SQL database
        - Efficient querying with Polars
-    
+
     2. Model Evaluation
        - Automated evaluation of multiple models
        - Standardized metrics across model types
-    
+
     3. Monitoring
        - Data drift detection
        - Performance degradation tracking
-    
+
     4. Reporting
        - Automated report generation
        - Actionable recommendations
-    
+
     5. Production Readiness
        - Error handling
        - Logging and timestamps
@@ -415,7 +415,7 @@ def main():
     print(
         """
     Enhance this pipeline with:
-    
+
     1. Email alerts for critical issues
     2. Visualization generation (plots saved to files)
     3. Database logging of all metrics

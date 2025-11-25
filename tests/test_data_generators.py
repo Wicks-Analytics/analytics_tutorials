@@ -11,7 +11,7 @@ from utils.data_generators import (
 
 def test_generate_insurance_claims():
     """Test insurance claims data generation."""
-    df = generate_insurance_claims(n_records=100)
+    df = generate_insurance_claims(n_claims=100)
 
     assert isinstance(df, pl.DataFrame)
     assert len(df) == 100
@@ -24,7 +24,7 @@ def test_generate_insurance_claims():
 
 def test_generate_insurance_policies():
     """Test insurance policies data generation."""
-    df = generate_insurance_policies(n_records=50)
+    df = generate_insurance_policies(n_policies=50)
 
     assert isinstance(df, pl.DataFrame)
     assert len(df) == 50
@@ -36,7 +36,7 @@ def test_generate_insurance_policies():
 
 def test_generate_fraud_predictions():
     """Test fraud predictions data generation."""
-    df = generate_fraud_predictions(n_records=200)
+    df = generate_fraud_predictions(n_samples=200)
 
     assert isinstance(df, pl.DataFrame)
     assert len(df) == 200
@@ -52,8 +52,8 @@ def test_data_generation_consistency():
     """Test that data generation is consistent with seed."""
     # Note: This test assumes the generators use a seed parameter
     # Adjust if your implementation differs
-    df1 = generate_insurance_claims(n_records=10)
-    df2 = generate_insurance_claims(n_records=10)
+    df1 = generate_insurance_claims(n_claims=10)
+    df2 = generate_insurance_claims(n_claims=10)
 
     # Both should have same structure
     assert df1.columns == df2.columns

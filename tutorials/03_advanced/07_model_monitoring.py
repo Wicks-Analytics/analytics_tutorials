@@ -309,29 +309,29 @@ def main():
         result = monitoring.compare_populations(
             baseline_df, 'score', 'score'
         )
-        
+
         # 2. Calculate current metrics
         current_auc = calculate_roc_curve(
             current_df, 'actual', 'score'
         ).auc_score
-        
+
         # 3. Check thresholds
         alerts = []
         if result.is_significant:
             alerts.append('Data drift detected')
-        
+
         if current_auc < thresholds['critical']:
             alerts.append('Critical performance drop')
         elif current_auc < thresholds['warning']:
             alerts.append('Performance warning')
-        
+
         # 4. Send alerts if needed
         if alerts:
             send_alert(alerts)
-        
+
         # 5. Log metrics
         log_metrics(current_auc, result.p_value)
-        
+
         return alerts
     """
     )
@@ -347,7 +347,7 @@ def main():
     4. Generates alerts based on thresholds
     5. Saves results to a monitoring table
     6. Creates visualization of metrics over time
-    
+
     Bonus: Set up scheduled execution (e.g., daily cron job)
     """
     )

@@ -28,7 +28,7 @@ jobs:
         run: uv sync --dev
 
       - name: Run Ruff (Linter)
-        run: uv run ruff check . --output-format=github
+        run: uv run ruff check . --output-format=github --ignore E402,F401
 
       - name: Run Ruff (Formatter Check)
         run: uv run ruff format --check .

@@ -98,7 +98,11 @@ exclude = [
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
-ignore = ["E501"]
+ignore = [
+    "E501",  # Line too long (handled by formatter)
+    "E402",  # Module level import not at top (common in notebooks)
+    "F401",  # Imported but unused (common in notebooks for availability checks)
+]
 
 [tool.ruff.format]
 quote-style = "double"

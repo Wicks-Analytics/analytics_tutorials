@@ -230,7 +230,7 @@ def main():
     result_t = monitoring.compare_populations(
         df, 'group1', 'group2', test_type='t-test'
     )
-    
+
     # Force Mann-Whitney U (non-parametric)
     result_mw = monitoring.compare_populations(
         df, 'group1', 'group2', test_type='mann-whitney'
@@ -289,13 +289,13 @@ def main():
     print(
         """
     Analyze if credit scores differ significantly between groups:
-    
+
     1. Create credit score groups (Low: <650, Medium: 650-750, High: >750)
     2. Compare premiums across credit score groups
     3. Test if high credit score customers pay less
     4. Calculate effect sizes for each comparison
     5. Create a summary report
-    
+
     Bonus: Test if model errors differ by credit score group
     """
     )

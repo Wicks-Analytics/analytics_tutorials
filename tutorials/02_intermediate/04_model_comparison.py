@@ -250,17 +250,17 @@ def main():
     # Weight models by their AUC scores
     auc1 = individual_results['Model 1']['roc'].auc_score
     auc2 = individual_results['Model 2']['roc'].auc_score
-    
+
     total_auc = auc1 + auc2
     weight1 = auc1 / total_auc
     weight2 = auc2 / total_auc
-    
+
     df_weighted = df.with_columns([
-        (pl.col('model1_fraud_score') * weight1 + 
+        (pl.col('model1_fraud_score') * weight1 +
          pl.col('model2_fraud_score') * weight2)
         .alias('weighted_ensemble')
     ])
-    
+
     # Evaluate weighted ensemble
     # Compare with simple average ensemble
     """

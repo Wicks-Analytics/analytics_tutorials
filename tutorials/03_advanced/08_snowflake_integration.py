@@ -107,7 +107,7 @@ def main():
         """
     # Instead of SELECT *
     query = '''
-        SELECT 
+        SELECT
             policy_id,
             customer_age,
             annual_premium,
@@ -139,7 +139,7 @@ def main():
         """
     # Aggregate before loading
     query = '''
-        SELECT 
+        SELECT
             policy_type,
             state,
             DATE_TRUNC('month', claim_date) as month,
@@ -159,7 +159,7 @@ def main():
 
     print("\nQuery 1: Load fraud predictions for model evaluation")
     fraud_query = """
-    SELECT 
+    SELECT
         claim_id,
         actual_fraud,
         model1_fraud_score,
@@ -173,7 +173,7 @@ def main():
 
     print("\nQuery 2: Load premium predictions with features")
     premium_query = """
-    SELECT 
+    SELECT
         policy_id,
         customer_age,
         credit_score,
@@ -188,7 +188,7 @@ def main():
 
     print("\nQuery 3: Complex join for comprehensive analysis")
     complex_query = """
-    SELECT 
+    SELECT
         c.claim_id,
         c.claim_amount,
         c.claim_type,
@@ -201,7 +201,7 @@ def main():
         p.coverage_amount,
         p.credit_score
     FROM INSURANCE_DB.PUBLIC.CLAIMS c
-    INNER JOIN INSURANCE_DB.PUBLIC.POLICIES p 
+    INNER JOIN INSURANCE_DB.PUBLIC.POLICIES p
         ON c.policy_id = p.policy_id
     WHERE c.claim_date >= DATEADD(year, -1, CURRENT_DATE())
     AND c.claim_status = 'Approved'
@@ -265,18 +265,18 @@ def main():
        - Use auto-suspend (e.g., 5 minutes)
        - Use auto-resume
        - Right-size your warehouse
-    
+
     2. Query Optimization:
        - Use WHERE clauses to reduce data scanned
        - Avoid SELECT * in production
        - Use LIMIT for development/testing
        - Leverage result caching
-    
+
     3. Data Organization:
        - Partition large tables by date
        - Use clustering keys for frequently filtered columns
        - Consider data retention policies
-    
+
     4. Monitoring:
        - Track query history and costs
        - Identify expensive queries
@@ -290,19 +290,19 @@ def main():
         """
     # Load only new data since last run
     last_load_date = '2024-01-01'  # From metadata table
-    
+
     query = f'''
         SELECT *
         FROM INSURANCE_DB.PUBLIC.CLAIMS
         WHERE claim_date > '{last_load_date}'
         AND claim_date <= CURRENT_DATE()
     '''
-    
+
     new_data = load_from_snowflake(query)
-    
+
     # Process new data
     # ...
-    
+
     # Update metadata table with new last_load_date
     update_query = f'''
         UPDATE INSURANCE_DB.PUBLIC.ETL_METADATA
@@ -340,7 +340,7 @@ def main():
     3. Calculates lift and ROC metrics
     4. Saves results back to a Snowflake table
     5. Includes error handling and logging
-    
+
     Bonus: Implement incremental loading and cost tracking
     """
     )

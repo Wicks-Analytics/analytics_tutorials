@@ -159,11 +159,11 @@ def generate_insurance_claims(
     settlement_amounts = []
     for i, status in enumerate(claim_statuses):
         if status == "Denied":
-            settlement = 0
+            settlement = 0.0
         elif status == "Approved":
             settlement = claim_amounts[i] * np.random.uniform(0.7, 1.0)
         else:
-            settlement = 0  # Pending/Under Review
+            settlement = 0.0  # Pending/Under Review
         settlement_amounts.append(round(settlement, 2))
 
     # Create DataFrame

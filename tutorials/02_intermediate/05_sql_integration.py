@@ -83,7 +83,7 @@ def main():
 
     policy_summary = load_from_sql(
         """
-        SELECT 
+        SELECT
             policy_type,
             state,
             COUNT(*) as policy_count,
@@ -104,7 +104,7 @@ def main():
 
     claims_with_policies = load_from_sql(
         """
-        SELECT 
+        SELECT
             c.claim_id,
             c.claim_amount,
             c.claim_type,
@@ -166,7 +166,7 @@ def main():
     print("\nStrategy 3: Use aggregations in SQL when possible")
     monthly_stats = load_from_sql(
         """
-        SELECT 
+        SELECT
             strftime('%Y-%m', claim_date) as month,
             COUNT(*) as claim_count,
             AVG(claim_amount) as avg_amount,
@@ -237,9 +237,9 @@ def main():
     2. Filter for high-value claims (amount > $50,000)
     3. Calculate fraud detection metrics by policy type
     4. Save results to a new table
-    
+
     Example query:
-    SELECT 
+    SELECT
         p.policy_type,
         c.claim_id,
         c.claim_amount,

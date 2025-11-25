@@ -195,9 +195,7 @@ def main():
     print(null_counts)
 
     # Fill null values (example)
-    df_filled = df.with_columns(
-        [pl.col("annual_premium").fill_null(pl.col("annual_premium").median())]
-    )
+    df.with_columns([pl.col("annual_premium").fill_null(pl.col("annual_premium").median())])
     print("✓ Filled null values with median")
 
     # Drop rows with any nulls

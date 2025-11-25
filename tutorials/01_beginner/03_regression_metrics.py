@@ -197,7 +197,7 @@ def main():
         .when(pl.col('coverage_amount') < 250000).then(pl.lit('Medium'))
         .otherwise(pl.lit('High')).alias('coverage_group')
     ])
-    
+
     # Calculate metrics for each group
     for group in ['Low', 'Medium', 'High']:
         group_df = df_coverage.filter(pl.col('coverage_group') == group)
